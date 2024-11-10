@@ -4,6 +4,8 @@ pks <- c(
   ,"readxl"
   ,"janitor"
   ,"here"
+  ,"curl"
+  ,"rvest"
 )
 install_load_packages(pks)
 
@@ -55,8 +57,9 @@ raw_data <- raw_data |>
   filter(!grepl("Source", locality))
 
 # keep communes in our data
-raw_data <- raw_data |>
-  filter(!grepl("Source", locality))
+commune_level_data <- raw_data |>
+  filter(!grepl("nationale|offres", locality),
+         !is.na(locality))
 # create national data
 country_level <- raw_data |>
   filter(grepl("nationale", locality)) |>
@@ -71,7 +74,7 @@ country_level_data <- full_join(country_level, offers_country) |>
   mutate(locality = "Grand-Duchy of Luxembourg")
 
 # scrape communes table
-current_communes <- "https://is.gd/lux_communes" |>
+current_communes <- "https://b-rodrigues.github.io/list_communes/" |> curl() |>
   rvest::read_html() |>
   rvest::html_table() |>
   purrr::pluck(2) |>
@@ -79,3 +82,42 @@ current_communes <- "https://is.gd/lux_communes" |>
   dplyr::filter(name_2 != "Name") |>
   dplyr::rename(commune = name_2) |>
   dplyr::mutate(commune = stringr::str_remove(commune, " .$"))
+# check if we have all the communes in our data
+
+setdiff(unique(commune_level_data$locality), current_communes$commune)
+
+# list of former communes
+former_communes <- "https://b-rodrigues.github.io/former_communes/#Former_communes" |>
+  rvest::read_html() |>
+  rvest::html_table() |>
+  purrr::pluck(3) |>
+  janitor::clean_names() |>
+  dplyr::filter(year_dissolved > 2009)
+
+former_communes
+
+# rename some communes
+
+communes <- unique(c(former_communes$name,
+                     current_communes$commune))
+# we need to rename some communes
+
+# Different spelling of these communes between wikipedia and the data
+
+communes[which(communes == "Clemency")] <- "Clémency"
+communes[which(communes == "Redange")] <- "Redange-sur-Attert"
+communes[which(communes == "Erpeldange-sur-Sûre")] <- "Erpeldange"
+communes[which(communes == "Luxembourg City")] <- "Luxembourg"
+communes[which(communes == "Käerjeng")] <- "Kaerjeng"
+communes[which(communes == "Petange")] <- "Pétange"
+
+setdiff(unique(commune_level_data$locality),
+        communes)
+
+# save commune level and country level data
+lst <- list(commune_level_data, country_level_data) |> set_names(
+  c("commune_level_data", "country_level_data")
+)
+paths <- file.path(here(), "data", paste0(names(lst), ".csv"))
+
+walk2(lst, paths, write_csv)
