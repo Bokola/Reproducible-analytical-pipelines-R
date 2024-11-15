@@ -5,8 +5,8 @@ library(tidyr)
 
 #Let's load the datasets:
 
-commune_level_data <- read.csv("datasets/commune_level_data.csv")
-country_level_data <- read.csv("datasets/country_level_data.csv")
+commune_level_data <- read.csv("./data/commune_level_data.csv")
+country_level_data <- read.csv("./data/country_level_data.csv")
 
 #Let's compute the Laspeyeres index for each commune:
 
