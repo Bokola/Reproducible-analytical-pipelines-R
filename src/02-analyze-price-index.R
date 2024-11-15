@@ -2,6 +2,7 @@ library(dplyr)
 library(ggplot2)
 library(purrr)
 library(tidyr)
+library(here)
 
 #Let's load the datasets:
 
@@ -41,90 +42,33 @@ communes <- c("Luxembourg",
               "Schengen",
               "Wincrange")
 
-# Luxembourg
+# make a plotting function
 
-filtered_data <- commune_level_data %>%
-  filter(locality == communes[1])
+make_plot <- function(country_level_data,
+                      commune_level_data,
+                      commune){
+  
+  filtered_data <- commune_level_data %>%
+    filter(locality == commune)
+  
+  data_to_plot <- bind_rows(
+    country_level_data,
+    filtered_data
+  ) %>% mutate(
+    year = as.Date(as.character(year), format = "%Y")
+  )
+  
+  p <- ggplot(data_to_plot) +
+    geom_line(aes(y = pl_m2,
+                  x = year,
+                  group = locality,
+                  colour = locality)) + scale_x_date()
+ ggsave(file.path(here(), "plots", paste0(commune, "_plot", ".pdf")), p)
+}
 
-data_to_plot <- bind_rows(
-  country_level_data,
-  filtered_data
-)
+# map over communes and call make_plot()
 
-lux_plot <- ggplot(data_to_plot) +
-  geom_line(aes(y = pl_m2,
-                x = year,
-                group = locality,
-                colour = locality))
-
-
-# Esch sur Alzette
-
-filtered_data <- commune_level_data %>%
-  filter(locality == communes[2])
-
-data_to_plot <- bind_rows(
-  country_level_data,
-  filtered_data
-)
-
-esch_plot <- ggplot(data_to_plot) +
-  geom_line(aes(y = pl_m2,
-                x = year,
-                group = locality,
-                colour = locality))
-
-# Mamer
-
-filtered_data <- commune_level_data %>%
-  filter(locality == communes[3])
-
-data_to_plot <- bind_rows(
-  country_level_data,
-  filtered_data
-)
-
-mamer_plot <- ggplot(data_to_plot) +
-  geom_line(aes(y = pl_m2,
-                x = year,
-                group = locality,
-                colour = locality))
-
-# Schengen
-
-filtered_data <- commune_level_data %>%
-  filter(locality == communes[4])
-
-data_to_plot <- bind_rows(
-  country_level_data,
-  filtered_data
-)
-
-schengen_plot <- ggplot(data_to_plot) +
-  geom_line(aes(y = pl_m2,
-                x = year,
-                group = locality,
-                colour = locality))
-
-# Wincrange
-
-filtered_data <- commune_level_data %>%
-  filter(locality == communes[5])
-
-data_to_plot <- bind_rows(
-  country_level_data,
-  filtered_data
-)
-
-wincrange_plot <- ggplot(data_to_plot) +
-  geom_line(aes(y = pl_m2,
-                x = year,
-                group = locality,
-                colour = locality))
-
-# Let's save the plots
-ggsave("plots/lux_plot.pdf", lux_plot)
-ggsave("plots/esch_plot.pdf", esch_plot)
-ggsave("plots/mamer_plot.pdf", mamer_plot)
-ggsave("plots/schengen_plot.pdf", schengen_plot)
-ggsave("plots/wincrange_plot.pdf", wincrange_plot)
+map(communes,
+    make_plot,
+    country_level_data = country_level_data,
+    commune_level_data = commune_level_data)
