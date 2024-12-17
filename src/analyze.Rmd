@@ -1,0 +1,105 @@
+---
+title: "Nominal house prices data in Luxembourg - Data cleaning"
+author: "BO"
+date: "`r Sys.Date()`"
+---
+
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(janitor)
+library(purrr)
+library(readxl)
+library(rvest)
+library(stringr)
+library(here)
+library(tidyr)
+```
+
+
+## Reading the data
+
+```{r}
+commune_level_data <- read.csv(file.path(here(),"data","commune_level_data.csv"))
+country_level_data <- read.csv(file.path(here(), "data","country_level_data.csv"))
+```
+## Pre-process the data
+
+Compute price index
+```{r}
+get_laspeyeres <- function(dataset, start_year = "2010"){
+
+  which_dataset <- deparse(substitute(dataset))
+
+  group_var <- if(grepl("commune", which_dataset)){
+                 quo(locality)
+               } else {
+                 NULL
+               }
+  dataset %>%
+    group_by(!!group_var) %>%
+    mutate(p0 = ifelse(year == start_year,
+                       average_price_nominal_euros,
+                       NA)) %>%
+    fill(p0, .direction = "down") %>%
+    mutate(p0_m2 = ifelse(year == start_year,
+                          average_price_m2_nominal_euros,
+                          NA)) %>%
+    fill(p0_m2, .direction = "down") %>%
+    ungroup() %>%
+    mutate(
+      p1 = average_price_nominal_euros/p0*100,
+      p1_m2 = average_price_m2_nominal_euros/p0_m2*100)
+
+}
+```
+
+```{r}
+commune_level_data <- get_laspeyeres(commune_level_data)
+country_level_data <- get_laspeyeres(country_level_data)
+```
+
+
+Plotting function
+
+```{r}
+communes <- c("Luxembourg",
+              "Esch-sur-Alzette",
+              "Mamer",
+              "Schengen",
+              "Wincrange")
+
+# make a plotting function
+
+make_plot <- function(country_level_data,
+                      commune_level_data,
+                      commune){
+  
+  filtered_data <- commune_level_data %>%
+    filter(locality == commune)
+  
+  data_to_plot <- bind_rows(
+    country_level_data,
+    filtered_data
+  ) %>% mutate(
+    year = as.Date(as.character(year), format = "%Y")
+  )
+  
+  p <- ggplot(data_to_plot) +
+    geom_line(aes(y = p1_m2,
+                  x = year,
+                  group = locality,
+                  colour = locality)) + scale_x_date()
+ ggsave(file.path(here(), "plots", paste0(commune, "_plot", ".pdf")), p)
+}
+```
+
+```{r, results = "asis"}
+
+# map over communes and call make_plot()
+
+map(communes,
+    make_plot,
+    country_level_data = country_level_data,
+    commune_level_data = commune_level_data)
+```
