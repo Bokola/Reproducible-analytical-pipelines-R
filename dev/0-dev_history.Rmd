@@ -117,7 +117,9 @@ fusen::inflate(flat_file = "dev/data_doc.Rmd",
 fusen::inflate(flat_file = "dev/analyze.Rmd",
                vignette_name = "analyze",
                overwrite = TRUE
-               ,check = TRUE
+               ,check = TRUE,
+               ,document = TRUE
+               ,open_vignette = TRUE
                )
 ```
 
