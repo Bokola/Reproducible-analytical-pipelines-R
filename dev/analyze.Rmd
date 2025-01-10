@@ -23,7 +23,7 @@ Compute price index
 
 
 ```{r function-get_laspyeres}
-#' Draw some plots
+#' Calculate price indices
 #'
 #' @param dataset The dataset for which the index needs to be computed
 #' @importFrom dplyr group_by ungroup mutate

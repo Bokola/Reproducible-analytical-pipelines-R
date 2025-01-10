@@ -116,7 +116,9 @@ fusen::inflate(flat_file = "dev/data_doc.Rmd",
 # execute in the console directly
 fusen::inflate(flat_file = "dev/analyze.Rmd",
                vignette_name = "analyze",
-               overwrite = TRUE)
+               overwrite = TRUE,
+               document = TRUE,
+               open_vignette = TRUE)
 ```
 
 ## Use everytime needed

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_laspeyeres.R
 \name{get_laspeyeres}
 \alias{get_laspeyeres}
-\title{Draw some plots}
+\title{Calculate price indices}
 \usage{
 get_laspeyeres(dataset)
 }
@@ -13,7 +13,7 @@ get_laspeyeres(dataset)
 The input dataset with added columns: p0, p0_m2, pl and pl_m2. p0 are prices at year 0 (2010), and pl are the index.
 }
 \description{
-Draw some plots
+Calculate price indices
 }
 \examples{
 \dontrun{ 
