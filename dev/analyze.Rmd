@@ -23,7 +23,7 @@ Compute price index
 
 
 ```{r function-get_laspyeres}
-#' Draw some plots
+#' Compute price indices
 #'
 #' @param dataset The dataset for which the index needs to be computed
 #' @importFrom dplyr group_by ungroup mutate
@@ -110,7 +110,8 @@ make_plot <- function(country_level_data,
                   x = year,
                   group = locality,
                   colour = locality)) + scale_x_date()
- ggsave(file.path(here(), "plots", paste0(commune, "_plot", ".pdf")), p)
+ # ggsave(file.path(here(), paste0(commune, "_plot", ".png")), p)
+  p
 }
 ```
 
