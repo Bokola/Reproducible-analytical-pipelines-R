@@ -1,11 +1,11 @@
 ---
 title: "Nominal house prices data in Luxembourg"
-author: "Bruno Rodrigues"
+author: "Owiti Okola"
 date: "`r Sys.Date()`"
 ---
 
-```{r, include=F}
-opts_chunk$set(echo = FALSE)
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 
 ```
 
