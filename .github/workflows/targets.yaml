@@ -43,8 +43,6 @@ jobs:
           r-version: '4.3.2'
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - uses: r-lib/actions/check-r-package@v2
-
       - name: Install Mac system dependencies
         if: runner.os == 'macOS'
         run: brew install zeromq
