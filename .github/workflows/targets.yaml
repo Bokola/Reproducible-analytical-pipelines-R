@@ -42,6 +42,23 @@ jobs:
         with: 
           r-version: '4.3.2'
       - uses: r-lib/actions/setup-pandoc@v2
+      
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - name: Install remotes
+        run: |
+          Rscript -e "install.packages('remotes', repos='https://ftp.belnet.be/mirror/CRAN')"
+
+      - name: Install rapR from Github
+        run: |
+          Rscript -e "remotes::install_github("Bokola/Reproducible-analytical-pipelines-R@fussen", ref = "08537708c68d75a8a00491e8fd2a5b33d4a6b8c4", force = TRUE)
+          "
+
+
+      - uses: r-lib/actions/check-r-package@v2
 
       - name: Install Mac system dependencies
         if: runner.os == 'macOS'
