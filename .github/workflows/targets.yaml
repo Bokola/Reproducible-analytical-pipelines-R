@@ -89,9 +89,7 @@ jobs:
           renv::restore()
             
       - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
+
 
       - name: Install rapR from Github
         shell: Rscript {0}
