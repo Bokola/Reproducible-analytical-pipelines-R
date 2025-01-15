@@ -1,6 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+# How to run
+
+- clone repo with
+  `git clone git@github.com:Bokola/Reproducible-analytical-pipelines-R.git`
+- switch to `pipeline` branch with `git checkout pipeline`
+- run pipeline with `targets::tar_make()`
+- view output saved on `analyse_data.html`
+
 # rapR
 
 <!-- badges: start -->
@@ -38,5 +46,6 @@ data("country_level_data", package = "rapR")
 commune_level_data <- get_laspeyeres(commune_level_data)
 country_level_data <-  get_laspeyeres(country_level_data)
 make_plot(country_level_data, commune_level_data, "Luxembourg")
-#> Saving 7 x 5 in image
 ```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />

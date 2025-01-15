@@ -13,6 +13,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+# How to run
+
+- clone repo with `git clone git@github.com:Bokola/Reproducible-analytical-pipelines-R.git`
+- switch to `pipeline` branch with `git checkout pipeline`
+- run pipeline with `targets::tar_make()`
+- view output saved on `analyse_data.html`
+
+
 # rapR
 
 <!-- badges: start -->
