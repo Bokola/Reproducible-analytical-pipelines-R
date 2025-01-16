@@ -55,7 +55,9 @@ RUN R -e "setwd('/home/rapR'); list.files(); renv::init();renv::restore();remote
 
 
 
-RUN cd /home/rapR/pipeline_output &&  R -e "targets::tar_make()"
+RUN cd /home/rapR &&  R -e "targets::tar_make()"
 
-CMD mv /home/rapR/pipeline_output/* /home/rapR/shared_folder/
+RUN ls /home/rapR/
+
+#CMD mv /home/rapR/pipeline_output/* /home/rapR/shared_folder/
 
