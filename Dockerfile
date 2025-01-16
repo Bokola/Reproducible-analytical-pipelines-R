@@ -48,20 +48,21 @@ COPY analyse_data.Rmd /home/rapR/analyse_data.Rmd
 
 COPY _targets.R /home/rapR/_targets.R
 
-RUN R -e "setwd('/home/rapR')" && RUN R -e "list.files()"
+RUN R -e "setwd('/home/rapR')" &&  R -e "list.files()" && \
+R -e "remotes::install_github('Bokola/Reproducible-analytical-pipelines-R@fussen', ref = '08537708c68d75a8a00491e8fd2a5b33d4a6b8c4', force = TRUE)"
 
 
 #RUN R -e "install.packages(c('janitor', 'targets', 'tarchetypes', 'ggplot2', 'here', 'rlang', 'tidyr', 'purrr', 'fusen', 'testthat', 'usethis'), dep = T)"
 
-RUN R -e "remotes::install_github('Bokola/Reproducible-analytical-pipelines-R@fussen', ref = '08537708c68d75a8a00491e8fd2a5b33d4a6b8c4', force = TRUE)"
+#RUN R -e "remotes::install_github('Bokola/Reproducible-analytical-pipelines-R@fussen', ref = '08537708c68d75a8a00491e8fd2a5b33d4a6b8c4', force = TRUE)"
 
-RUN R -e "renv::init()"
-RUN R -e "renv::restore()"
-RUN R -e ".packages(all.available=TRUE)"
+#RUN R -e "renv::init()"
+#RUN R -e "renv::restore()"
+#RUN R -e ".packages(all.available=TRUE)"
 
 
-RUN cd /home/rapR
-RUN R -e "targets::tar_make()"
+#RUN cd /home/rapR
+#RUN R -e "targets::tar_make()"
 
-CMD mv /home/rapR/pipeline_output/* /home/rapR/shared_folder/
+#CMD mv /home/rapR/pipeline_output/* /home/rapR/shared_folder/
 
