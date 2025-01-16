@@ -48,9 +48,7 @@ COPY analyse_data.Rmd /home/rapR/analyse_data.Rmd
 
 COPY _targets.R /home/rapR/_targets.R
 
-RUN R -e "setwd('/home/rapR')"
-
-RUN R -e "list.files()"
+RUN R -e "setwd('/home/rapR')" && RUN R -e "list.files()"
 
 
 #RUN R -e "install.packages(c('janitor', 'targets', 'tarchetypes', 'ggplot2', 'here', 'rlang', 'tidyr', 'purrr', 'fusen', 'testthat', 'usethis'), dep = T)"
@@ -59,6 +57,7 @@ RUN R -e "remotes::install_github('Bokola/Reproducible-analytical-pipelines-R@fu
 
 RUN R -e "renv::init()"
 RUN R -e "renv::restore()"
+RUN R -e ".packages(all.available=TRUE)"
 
 
 RUN cd /home/rapR
