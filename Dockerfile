@@ -50,6 +50,8 @@ COPY _targets.R /home/rapR/_targets.R
 
 RUN R -e "setwd('/home/rapR')"
 
+RUN R -e "list.files()"
+
 
 #RUN R -e "install.packages(c('janitor', 'targets', 'tarchetypes', 'ggplot2', 'here', 'rlang', 'tidyr', 'purrr', 'fusen', 'testthat', 'usethis'), dep = T)"
 
