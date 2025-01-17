@@ -59,5 +59,5 @@ RUN cd /home/rapR &&  R -e "targets::tar_make()"
 
 RUN ls /home/rapR/pipeline_output
 
-#CMD mv /home/rapR/pipeline_output/* /home/rapR/shared_folder/
+CMD mv /home/rapR/pipeline_output/* /home/rapR/shared_folder/
 
