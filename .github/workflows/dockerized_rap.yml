@@ -20,7 +20,7 @@ jobs:
     - name: Docker Run Action
       run: >
         docker run --rm --name housing_container -v 
-        /github/workspace/shared_folder:/home/rapR/shared_folder:rw 
+        /github/workspace/shared_folder:/home/housing/shared_folder:rw 
         housing_image
       
     - uses: actions/upload-artifact@v3
