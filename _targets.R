@@ -60,5 +60,7 @@ list(
   tar_render(
     analyse_data,
     "analyse_data.Rmd"
+    # specify output dir for docker
+    ,output_dir = "/home/housing/pipeline_output"
   )
 )
