@@ -34,30 +34,30 @@
 
 FROM bokola/r_4.3.2:gitops-docker-8d86c147f0825ed026bc7d7c2125f487a19680ec
 
-RUN mkdir /home/rapR
+RUN mkdir /home/housing
 
 # create a volume to store outputs of runtime
 
-RUN mkdir /home/rapR/pipeline_output
+RUN mkdir /home/housing/pipeline_output
 
-RUN mkdir /home/rapR/shared_folder
+RUN mkdir /home/housing/shared_folder
 
-COPY renv.lock /home/rapR/renv.lock
+COPY renv.lock /home/housing/renv.lock
 
-COPY analyse_data.Rmd /home/rapR/analyse_data.Rmd
+COPY analyse_data.Rmd /home/housing/analyse_data.Rmd
 
-COPY _targets.R /home/rapR/_targets.R
+COPY _targets.R /home/housing/_targets.R
 
-# do inside /home/rapR
+# do inside /home/housing
 
-RUN R -e "setwd('/home/rapR'); list.files(); renv::init();renv::restore();remotes::install_github('Bokola/Reproducible-analytical-pipelines-R@fussen', ref = '08537708c68d75a8a00491e8fd2a5b33d4a6b8c4', force = TRUE)" 
-
-
+RUN R -e "setwd('/home/housing'); list.files(); renv::init();renv::restore();remotes::install_github('Bokola/Reproducible-analytical-pipelines-R@fussen', ref = '08537708c68d75a8a00491e8fd2a5b33d4a6b8c4', force = TRUE)" 
 
 
-RUN cd /home/rapR &&  R -e "targets::tar_make()"
 
-RUN ls /home/rapR/pipeline_output
 
-CMD mv /home/rapR/pipeline_output/* /home/rapR/shared_folder/
+RUN cd /home/housing &&  R -e "targets::tar_make()"
+
+RUN ls /home/housing/pipeline_output
+
+CMD mv /home/housing/pipeline_output/* /home/housing/shared_folder/
 
