@@ -13,7 +13,8 @@ Imports:
     here,
     rlang,
     tidyr,
-    utils
+    utils,
+    usethis
 Suggests: 
     attachment,
     fusen,
